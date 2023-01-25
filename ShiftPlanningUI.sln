@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftPlanningUI", "ShiftPla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftPlanningUITesting", "ShiftPlanningUITesting\ShiftPlanningUITesting.csproj", "{49FD2D0F-AE14-40BE-B653-11E808F9AE1E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftPlanningLibrary", "..\ShiftPlanningLibrary\ShiftPlanningLibrary\ShiftPlanningLibrary.csproj", "{FAC2BB81-7D8F-4F6D-BAC0-33EA81808A0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{49FD2D0F-AE14-40BE-B653-11E808F9AE1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49FD2D0F-AE14-40BE-B653-11E808F9AE1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49FD2D0F-AE14-40BE-B653-11E808F9AE1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAC2BB81-7D8F-4F6D-BAC0-33EA81808A0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAC2BB81-7D8F-4F6D-BAC0-33EA81808A0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAC2BB81-7D8F-4F6D-BAC0-33EA81808A0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAC2BB81-7D8F-4F6D-BAC0-33EA81808A0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

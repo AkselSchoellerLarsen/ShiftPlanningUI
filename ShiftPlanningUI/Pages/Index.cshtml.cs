@@ -9,18 +9,19 @@ namespace ShiftPlanningUI.Pages {
         public List<IShift> Shifts { get; set; }
 
         [BindProperty]
-        public Shift Shift { get; set; }
+        public DateTime Start { get; set; }
+        [BindProperty]
+        public DateTime End { get; set; }
 
         public IndexModel() {
             Shifts = new List<IShift>();
-            Shift = new Shift();
         }
 
         public void OnGet() {
             Shifts = GetShifts();
 
-            Shift.Start = DateTime.Today.AddHours(8);
-            Shift.End = DateTime.Today.AddHours(16);
+            Start = DateTime.Today.AddHours(8);
+            End = DateTime.Today.AddHours(16);
         }
 
         private List<IShift> GetShifts() {
@@ -33,12 +34,11 @@ namespace ShiftPlanningUI.Pages {
 
         public async Task<IActionResult> OnPostAsync() {
             HttpClient client = new HttpClient();
-            HttpContent content = JsonContent.Create<IShift>(Shift);
+            HttpContent content = JsonContent.Create<IShift>(new Shift(Start, End));
 
             await client.PostAsync(RESTHelper.PostShiftURI, content);
 
             return RedirectToPage("Index");
-            //return Redirect($"~/");
         }
     }
 }
