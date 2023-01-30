@@ -8,11 +8,13 @@
     <div class="row">
         <div class="col-sm">
             @for (int i = 0; i < Model.Shifts.Count; i++) {
-                <div class="card">
-                    <p>Id: @Model.Shifts[i].Id</p>
-                    <p>Start time: @Model.Shifts[i].Start</p>
-                    <p>End time: @Model.Shifts[i].End</p>
-                </div>
+                <a asp-page="/Shifts/Shift" asp-route-id="@Model.Shifts[i].Id">
+                    <div class="card">
+                        <p>Id: @Model.Shifts[i].Id</p>
+                        <p>Start time: @Model.Shifts[i].Start</p>
+                        <p>End time: @Model.Shifts[i].End</p>
+                    </div>
+                </a>
             }
         </div>
         <div class="col-sm">
@@ -28,7 +30,7 @@
                     <span asp-validation-for="@Model.End" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Opret" class="btn btn-primary" />
                 </div>
             </form>
         </div>
