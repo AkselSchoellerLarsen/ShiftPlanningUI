@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShiftPlanningLibrary;
 using ShiftPlanningUI.Model;
 using ShiftPlanningUI.Model.Shifts;
+using ShiftPlanningUI.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ShiftPlanningUI.Pages {
@@ -14,19 +15,22 @@ namespace ShiftPlanningUI.Pages {
         [BindProperty]
         public DateTime End { get; set; }
 
-        public IndexModel() {
+        public IUserService UserService { get; set; }
+
+        public IndexModel(IUserService userService) {
             Shifts = new List<IShift>();
+            UserService = userService;
         }
 
         public void OnGet() {
-            Shifts = new ShiftCatalogue().GetShifts();
+            Shifts = new ShiftCatalogue().GetShifts(UserService.GetCurrentUser());
 
             Start = DateTime.Today.AddHours(8);
             End = DateTime.Today.AddHours(16);
         }
 
-        public async Task<IActionResult> OnPostAsync() {
-            new ShiftCatalogue().PostShift(new Shift(Start, End));
+        public IActionResult OnPost() {
+            new ShiftCatalogue().PostShift(new Shift(Start, End), UserService.GetCurrentUser());
 
             return Redirect("~/");
         }

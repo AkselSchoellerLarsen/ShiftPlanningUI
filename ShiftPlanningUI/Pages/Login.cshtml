@@ -1,0 +1,21 @@
+﻿@page
+@model ShiftPlanningUI.Pages.LoginModel
+@{
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="@Model.Email" class="control-label"></label>
+            <input type="email" asp-for="@Model.Email" class="form-control" />
+            <span asp-validation-for="@Model.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.Password" class="control-label"></label>
+            <input type="password" asp-for="@Model.Password" class="form-control" />
+            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+        </div>
+        <p style="color: red">@Model.ErrorLine</p>
+        <div class="form-group">
+            <input type="submit" value="Login" class="btn btn-primary" />
+        </div>
+    </form>
+    <a asp-page="Register">Not yet a user? Register here</a>
+}

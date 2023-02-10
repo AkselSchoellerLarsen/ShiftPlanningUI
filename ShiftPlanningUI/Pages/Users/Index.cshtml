@@ -1,0 +1,29 @@
+﻿@page
+@model ShiftPlanningUI.Pages.Users.IndexModel
+@{
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                @for (int i = 0; i < Model.Users.Count; i++) {
+                    <form method="post">
+                        @{ Model.Email = Model.Users[i].Email; }
+                        <input type="hidden" asp-for="@Model.Email" /> <!--ensure that Email is in scope-->
+                        <div class="card">
+                            <p>Email: @Model.Email</p>
+                            <p>Password: **************************</p>
+                            <div>
+                                @if (@Model.Users[i].IsAdmin) {
+                                    <p>Is admin</p>
+                                } else {
+                                    <p style ="float: left; width:fit-content;">Is not admin</p>
+                                    <input type="submit" value="Make admin" class="btn btn-primary" style="float: right; width:fit-content;" />
+                                }
+                            </div>
+                        </div>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+}

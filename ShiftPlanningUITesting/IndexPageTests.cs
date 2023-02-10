@@ -3,13 +3,13 @@ using ShiftPlanningUI.Model;
 using ShiftPlanningUI.Pages;
 
 namespace ShiftPlanningUITesting {
-    [Obsolete("The metods being tested have been moved to a different class")]
-    //[TestClass]
+    [Obsolete("The methods being tested have been moved to a different class")]
+    [TestClass]
     public class IndexPageTests {
-
+        /*
         private static string RESTURI = "https://shiftplanningrestservice.azurewebsites.net/";
 
-        //[TestMethod]
+        [TestMethod]
         public void IndexPageGetShiftsTest() {
             RESTHelper.BaseAddress = RESTURI;
 
@@ -22,7 +22,7 @@ namespace ShiftPlanningUITesting {
             Assert.IsTrue(shifts.Count > 0);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void IndexPagePostShiftTest() {
             RESTHelper.BaseAddress = RESTURI;
 
@@ -41,5 +41,6 @@ namespace ShiftPlanningUITesting {
 
             Assert.IsTrue(preShifts.Count + 1 == postShifts.Count);
         }
+        */
     }
 }

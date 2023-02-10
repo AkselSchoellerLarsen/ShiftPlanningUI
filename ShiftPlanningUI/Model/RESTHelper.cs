@@ -3,39 +3,77 @@
 
         public static string? BaseAddress { private get; set; }
 
-        public static string GetShiftsURI {
+        #region Shift
+        public static string GetShiftsUri {
             get {
                 if(BaseAddress == null) {
-                    throw new Exception("RESTHelper must have BaseAddress defined before GetShiftsURI can be retrived from it.");
-                }
-                return $"{BaseAddress!}/shift/";
-            }
-        }
-
-        public static string PostShiftURI {
-            get {
-                if (BaseAddress == null) {
-                    throw new Exception("RESTHelper must have BaseAddress defined before PostShiftURI can be retrived from it.");
+                    throw new Exception("RESTHelper must have BaseAddress defined before GetShiftsUri can be retrived from it.");
                 }
                 return $"{BaseAddress!}shift/";
             }
         }
 
-        public static string PutShiftURI {
+        public static string PostShiftUri {
             get {
                 if (BaseAddress == null) {
-                    throw new Exception("RESTHelper must have BaseAddress defined before PutShiftURI can be retrived from it.");
+                    throw new Exception("RESTHelper must have BaseAddress defined before PostShiftUri can be retrived from it.");
                 }
                 return $"{BaseAddress!}shift/";
             }
         }
 
-        public static string DeleteShiftURI(int id) {
+        public static string PutShiftUri {
+            get {
+                if (BaseAddress == null) {
+                    throw new Exception("RESTHelper must have BaseAddress defined before PutShiftUri can be retrived from it.");
+                }
+                return $"{BaseAddress!}shift/";
+            }
+        }
+
+        public static string DeleteShiftUri(int id) {
             if (BaseAddress == null) {
-                throw new Exception("RESTHelper must have BaseAddress defined before DeleteShiftURI can be called.");
+                throw new Exception("RESTHelper must have BaseAddress defined before DeleteShiftUri can be called.");
             }
             return $"{BaseAddress!}shift/{id}";
         }
+        #endregion
+        #region User
+        public static string GetUsersUri {
+            get {
+                if (BaseAddress == null) {
+                    throw new Exception("RESTHelper must have BaseAddress defined before GetUsersUri can be retrived from it.");
+                }
+                return $"{BaseAddress!}user/";
+            }
+        }
 
+        public static string RegisterUserUri {
+            get {
+                if (BaseAddress == null) {
+                    throw new Exception("RESTHelper must have BaseAddress defined before RegisterUserUri can be retrived from it.");
+                }
+                return $"{BaseAddress!}user/";
+            }
+        }
+
+        public static string MakeUserAdminUri {
+            get {
+                if (BaseAddress == null) {
+                    throw new Exception("RESTHelper must have BaseAddress defined before MakeUserAdminUri can be retrived from it.");
+                }
+                return $"{BaseAddress!}user/";
+            }
+        }
+
+        public static string VerifyUserUri {
+            get {
+                if (BaseAddress == null) {
+                    throw new Exception("RESTHelper must have BaseAddress defined before VerifyUserUri can be called.");
+                }
+                return $"{BaseAddress!}user/verify";
+            }
+        }
+        #endregion
     }
 }

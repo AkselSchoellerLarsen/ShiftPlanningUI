@@ -3,6 +3,7 @@
 @{
     <form method="post">
         <input type="hidden" asp-for="@Model.Id" /> <!--ensure that Id is in scope-->
+        <input type="hidden" asp-for="@Model.IsNew" /> <!--ensure that IsNew is in scope-->
         <div class="form-group">
             <label asp-for="@Model.Start" class="control-label"></label>
             <input asp-for="@Model.Start" class="form-control" />
@@ -14,16 +15,22 @@
             <span asp-validation-for="@Model.End" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <label asp-for="@Model.UserEmail" class="control-label"></label>
+            <input asp-for="@Model.UserEmail" class="form-control" />
+            <span asp-validation-for="@Model.UserEmail" class="text-danger"></span>
+        </div>
+        <div class="form-group">
             <input type="submit" value="Gem" class="btn btn-primary" />
         </div>
     </form>
-    <form method="post" asp-page-handler="Delete">
-        <input type="hidden" asp-for="@Model.Id" /> <!--ensure that Id is in scope-->
-        <input type="hidden" asp-for="@Model.Start" /> <!--ensure that Start is in scope-->
-        <input type="hidden" asp-for="@Model.End" /> <!--ensure that End is in scope-->
 
-        <div class="form-group">
-            <input type="submit" value="Slet" class="btn btn-primary" />
-        </div>
-    </form>
+    @if(!Model.IsNew) {
+        <form method="post" asp-page-handler="Delete">
+            <input type="hidden" asp-for="@Model.Id" /> <!--ensure that Id is in scope-->
+
+            <div class="form-group">
+                <input type="submit" value="Slet" class="btn btn-primary" />
+            </div>
+        </form>
+    }
 }

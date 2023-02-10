@@ -1,41 +1,99 @@
 ﻿using ShiftPlanningLibrary;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace ShiftPlanningUI.Model.Shifts {
     public class ShiftCatalogue : IShiftCatalogue {
-        public ShiftCatalogue() { }
+        private HttpClient _client;
 
-        public List<IShift> GetShifts() {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage hrm = client.GetAsync(RESTHelper.GetShiftsURI).Result;
-            List<IShift> shifts = new List<IShift>();
-            shifts.AddRange(hrm.Content.ReadFromJsonAsync<List<Shift>>().Result);
-            return shifts;
+        public ShiftCatalogue() {
+            _client = new HttpClient();
         }
 
-        public bool PostShift(IShift shift) {
-            HttpClient client = new HttpClient();
-            HttpContent content = JsonContent.Create<IShift>(shift);
+        public List<IShift> GetShifts(IUser? user) {
+            if(user is null) {
+                return new List<IShift>();
+            }
+            using (HttpRequestMessage request = new HttpRequestMessage()) {
+                request.Method = HttpMethod.Get;
+                request.RequestUri = new Uri(RESTHelper.GetShiftsUri);
 
-            HttpResponseMessage hrm = client.PostAsync(RESTHelper.PostShiftURI, content).Result;
-            return hrm.IsSuccessStatusCode;
+                request.Headers.Add("email", user.Email);
+                request.Headers.Add("password", user.Password);
+                request.Headers.Add("isAdmin", $"{user.IsAdmin}");
+
+                using (HttpResponseMessage response = _client.Send(request)) {
+                    HttpContent content = response.Content;
+                    List<IShift> shifts = new List<IShift>();
+                    List<Shift>? fromJson = content.ReadFromJsonAsync<List<Shift>>().Result;
+                    if(fromJson is not null) {
+                        shifts.AddRange(fromJson);
+                    }
+                    return shifts;
+                }
+            }
         }
 
-        public bool PutShift(IShift shift) {
-            HttpClient client = new HttpClient();
-            HttpContent content = JsonContent.Create<IShift>(shift);
+        public bool PostShift(IShift shift, IUser? user) {
+            if (user is null) {
+                return false;
+            }
+            using (HttpRequestMessage request = new HttpRequestMessage()) {
+                request.Method = HttpMethod.Post;
+                request.RequestUri = new Uri(RESTHelper.PostShiftUri);
 
-            HttpResponseMessage hrm = client.PutAsync(RESTHelper.PutShiftURI, content).Result;
-            return hrm.IsSuccessStatusCode;
+                request.Headers.Add("email", user.Email);
+                request.Headers.Add("password", user.Password);
+                request.Headers.Add("isAdmin", $"{user.IsAdmin}");
+
+                request.Content = JsonContent.Create<IShift>(shift);
+
+                using (HttpResponseMessage response = _client.Send(request)) {
+                    return response.IsSuccessStatusCode;
+                }
+            }
         }
 
-        public bool DeleteShift(int id) {
-            HttpClient client = new HttpClient();
+        public bool PutShift(IShift shift, IUser? user) {
+            if (user is null) {
+                return false;
+            }
+            using (HttpRequestMessage request = new HttpRequestMessage()) {
+                request.Method = HttpMethod.Put;
+                request.RequestUri = new Uri(RESTHelper.PutShiftUri);
 
-            HttpResponseMessage hrm = client.DeleteAsync(RESTHelper.DeleteShiftURI(id)).Result;
-            return hrm.IsSuccessStatusCode;
+                request.Headers.Add("email", user.Email);
+                request.Headers.Add("password", user.Password);
+                request.Headers.Add("isAdmin", $"{user.IsAdmin}");
+
+                request.Content = JsonContent.Create<IShift>(shift);
+
+                using (HttpResponseMessage response = _client.Send(request)) {
+                    return response.IsSuccessStatusCode;
+                }
+            }
         }
-        public bool DeleteShift(IShift shift) {
-            return DeleteShift(shift.Id);
+
+        public bool DeleteShift(int id, IUser? user) {
+            if (user is null) {
+                return false;
+            }
+            using (HttpRequestMessage request = new HttpRequestMessage()) {
+                request.Method = HttpMethod.Delete;
+                request.RequestUri = new Uri(RESTHelper.DeleteShiftUri(id));
+
+                request.Headers.Add("email", user.Email);
+                request.Headers.Add("password", user.Password);
+                request.Headers.Add("isAdmin", $"{user.IsAdmin}");
+
+                using (HttpResponseMessage response = _client.Send(request)) {
+                    return response.IsSuccessStatusCode;
+                }
+            }
+        }
+        public bool DeleteShift(IShift shift, IUser? user) {
+            return DeleteShift(shift.Id, user);
         }
     }
 }

@@ -8,17 +8,29 @@
     <div class="row">
         <div class="col-sm">
             @for (int i = 0; i < Model.Shifts.Count; i++) {
-                <a asp-page="/Shifts/Shift" asp-route-id="@Model.Shifts[i].Id">
+                @if (Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin) {
+                    <a asp-page="/Shifts/Shift" asp-route-id="@Model.Shifts[i].Id">
+                        <div class="card">
+                            <p>Id: @Model.Shifts[i].Id</p>
+                            <p>Start time: @Model.Shifts[i].Start</p>
+                            <p>End time: @Model.Shifts[i].End</p>
+                        </div>
+                    </a>
+                } else {
                     <div class="card">
                         <p>Id: @Model.Shifts[i].Id</p>
                         <p>Start time: @Model.Shifts[i].Start</p>
                         <p>End time: @Model.Shifts[i].End</p>
                     </div>
-                </a>
+                }
             }
         </div>
         <div class="col-sm">
-            <form method="post">
+            @if (Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin) {
+                <a class="btn btn-primary" asp-route-isNew="true" asp-page="/Shifts/Shift">Nyt skift</a>
+            }
+            <!--
+                <form method="post">
                 <div class="form-group">
                     <label asp-for="@Model.Start" class="control-label"></label>
                     <input asp-for="@Model.Start" class="form-control" />
@@ -33,6 +45,7 @@
                     <input type="submit" value="Opret" class="btn btn-primary" />
                 </div>
             </form>
+            -->
         </div>
     </div>
 </div>
