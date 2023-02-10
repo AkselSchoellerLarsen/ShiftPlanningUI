@@ -11,14 +11,12 @@
                 @if (Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin) {
                     <a asp-page="/Shifts/Shift" asp-route-id="@Model.Shifts[i].Id">
                         <div class="card">
-                            <p>Id: @Model.Shifts[i].Id</p>
                             <p>Start time: @Model.Shifts[i].Start</p>
                             <p>End time: @Model.Shifts[i].End</p>
                         </div>
                     </a>
                 } else {
                     <div class="card">
-                        <p>Id: @Model.Shifts[i].Id</p>
                         <p>Start time: @Model.Shifts[i].Start</p>
                         <p>End time: @Model.Shifts[i].End</p>
                     </div>
@@ -29,23 +27,6 @@
             @if (Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin) {
                 <a class="btn btn-primary" asp-route-isNew="true" asp-page="/Shifts/Shift">Nyt skift</a>
             }
-            <!--
-                <form method="post">
-                <div class="form-group">
-                    <label asp-for="@Model.Start" class="control-label"></label>
-                    <input asp-for="@Model.Start" class="form-control" />
-                    <span asp-validation-for="@Model.Start" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.End" class="control-label"></label>
-                    <input asp-for="@Model.End" class="form-control" />
-                    <span asp-validation-for="@Model.End" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Opret" class="btn btn-primary" />
-                </div>
-            </form>
-            -->
         </div>
     </div>
 </div>
