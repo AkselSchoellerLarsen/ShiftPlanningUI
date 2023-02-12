@@ -10,11 +10,6 @@ namespace ShiftPlanningUI.Pages {
     public class IndexModel : PageModel {
         public List<IShift> Shifts { get; set; }
 
-        [BindProperty]
-        public DateTime Start { get; set; }
-        [BindProperty]
-        public DateTime End { get; set; }
-
         public IUserService UserService { get; set; }
 
         public IndexModel(IUserService userService) {
@@ -24,15 +19,6 @@ namespace ShiftPlanningUI.Pages {
 
         public void OnGet() {
             Shifts = new ShiftCatalogue().GetShifts(UserService.GetCurrentUser());
-
-            Start = DateTime.Today.AddHours(8);
-            End = DateTime.Today.AddHours(16);
-        }
-
-        public IActionResult OnPost() {
-            new ShiftCatalogue().PostShift(new Shift(Start, End), UserService.GetCurrentUser());
-
-            return Redirect("~/");
         }
     }
 }

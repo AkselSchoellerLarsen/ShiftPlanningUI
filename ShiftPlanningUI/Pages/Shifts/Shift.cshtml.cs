@@ -28,8 +28,8 @@ namespace ShiftPlanningUI.Pages.Shifts {
         public void OnGet(int id, bool isNew) {
             IsNew = isNew;
             if(IsNew) {
-                Start = DateTime.Now;
-                End = DateTime.Now;
+                Start = DateTime.Today.AddHours(8);
+                End = DateTime.Today.AddHours(16);
                 return;
             }
 
