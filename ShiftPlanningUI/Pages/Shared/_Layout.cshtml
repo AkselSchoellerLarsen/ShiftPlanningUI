@@ -33,6 +33,11 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Users/Index">User administration</a>
                             }
                         </li>
+                        <li class="nav-item">
+                            @if (userService.IsLoggedIn()) {
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Shifts/ShiftList">Shifts</a>
+                            }
+                        </li>
                     </ul>
                 </div>
             </div>

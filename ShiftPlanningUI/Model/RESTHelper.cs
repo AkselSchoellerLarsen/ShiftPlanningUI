@@ -74,6 +74,15 @@
                 return $"{BaseAddress!}user/verify";
             }
         }
+
+        public static string DeleteUserUri {
+            get {
+                if (BaseAddress == null) {
+                    throw new Exception("RESTHelper must have BaseAddress defined before VerifyUserUri can be called.");
+                }
+                return $"{BaseAddress!}user";
+            }
+        }
         #endregion
     }
 }

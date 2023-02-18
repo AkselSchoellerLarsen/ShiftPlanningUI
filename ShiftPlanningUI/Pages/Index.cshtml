@@ -4,29 +4,49 @@
     ViewData["Title"] = "All Shifts";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-sm">
-            @for (int i = 0; i < Model.Shifts.Count; i++) {
-                @if (Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin) {
-                    <a asp-page="/Shifts/Shift" asp-route-id="@Model.Shifts[i].Id">
-                        <div class="card">
-                            <p>Start time: @Model.Shifts[i].Start</p>
-                            <p>End time: @Model.Shifts[i].End</p>
-                        </div>
-                    </a>
-                } else {
-                    <div class="card">
-                        <p>Start time: @Model.Shifts[i].Start</p>
-                        <p>End time: @Model.Shifts[i].End</p>
-                    </div>
-                }
-            }
+<div class="day_selector" style="overflow:hidden;background-color:azure;">
+
+    <p style="width:20%;float:left;">Week from @Model.StartDate.Day/@Model.StartDate.Month to @(Model.EndDate.Day-1)/@Model.EndDate.Month</p>
+
+    <form method="post" asp-page-handler="Previous">
+        <input type="hidden" asp-for="@Model.StartDate" /> <!--ensure that StartDate is in scope-->
+        <div style="text-align:center;width:40%;float:left;">
+            <input class="border border-primary btn" type="submit" value="Previous week" />
         </div>
-        <div class="col-sm">
-            @if (Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin) {
-                <a class="btn btn-primary" asp-route-isNew="true" asp-page="/Shifts/Shift">Nyt skift</a>
-            }
+    </form>
+
+    <form method="post" asp-page-handler="Next">
+        <input type="hidden" asp-for="@Model.EndDate" /> <!--ensure that EndDate is in scope-->
+        <div style="text-align:center;width:40%;float:left;">
+            <input class="border border-primary btn" type="submit" value="Next week" />
         </div>
+    </form>
+
+</div>
+
+<div style="height:100vh;">
+
+    <div style="float:left;position:relative;width:5%">
+        @foreach (int i in Model.GetHourIndicators()) {
+            <p class="border border-info" style="position:absolute;margin-top:1em;Top:@Model.GetTimeIndicatorOffset(i)">@i:00</p>
+        }
     </div>
+
+    @for (int i = 6; i > -1; i--) {
+        <div style="border-right: 1px solid black;position:relative;height:100vh;float:right;width:@Model.DayWidth;font-size:10px;">
+
+            @foreach (ShiftPlanningLibrary.IShift shift in Model.GetShiftsForDay(i)) {
+
+                <a asp-page="/Shifts/Shift" asp-route-id="@shift.Id" data-toggle="tooltip" data-placement="right" title="@Model.GetShiftTooltip(shift).Result">
+                    <div class="btn-block" style="width:100%;position:absolute;border-bottom:1px solid black;background-color:@Model.GetColor(shift);top:@Model.GetOffset(shift);height:@Model.GetDuration(shift);">
+                        <p>@shift.Id</p>
+                    </div>
+                </a>
+
+            }
+
+        </div>
+    }
+
+
 </div>

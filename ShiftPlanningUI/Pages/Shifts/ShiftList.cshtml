@@ -1,0 +1,58 @@
+﻿@page
+@model ShiftPlanningUI.Pages.Shifts.ShiftListModel
+@{
+    ViewData["Title"] = "All Shifts";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            @{ Model.IsAdmin = Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin; }
+            @if (Model.IsAdmin) {
+                <a class="btn btn-primary" asp-route-isNew="true" asp-page="/Shifts/Shift">Creat new shift</a>
+                <br>
+            }
+
+            <label for="sort">Sorting Method:</label>
+            <select name="sort" asp-for="@Model.SortingMethod">
+                <option value="start_time">Start time</option>
+                <option value="end_time">End time</option>
+                <option value="user">User</option>
+            </select>
+            <br>
+
+            <label asp-for="@Model.UnassignedSelected">Should unassigned shifts be shown:</label>
+            <input type="checkbox" asp-for="@Model.UnassignedSelected"></input>
+            <br>
+
+            @if (Model.IsAdmin) {
+            for (int i=0; i<Model.Users.Count; i++) {
+                <label asp-for="@Model.ShowUsers[i]">Should shifts for @(Model.Users[i].Email) be shown:</label>
+                <input type="checkbox" asp-for="@Model.ShowUsers[i]"></input>
+                <br>
+                }
+            }
+
+        </div>
+        <div class="col-sm">
+            @for (int i = 0; i < Model.Shifts.Count; i++) {
+                if (Model.UserService.IsLoggedIn() && Model.UserService.GetCurrentUser().IsAdmin) {
+                    <a asp-page="/Shifts/Shift" asp-route-id="@Model.Shifts[i].Id">
+                        <div class="card">
+                            <p>Start time: @Model.Shifts[i].Start</p>
+                            <p>End time: @Model.Shifts[i].End</p>
+                            <p>Assigned: @Model.Shifts[i].UserEmail</p>
+                        </div>
+                    </a>
+                } else if (Model.UserService.IsLoggedIn()) {
+                    <div class="card">
+                        <p>Start time: @Model.Shifts[i].Start</p>
+                        <p>End time: @Model.Shifts[i].End</p>
+                        <p>Assigned: @Model.Shifts[i].UserEmail</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+

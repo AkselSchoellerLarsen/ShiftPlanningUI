@@ -2,26 +2,38 @@
 @model ShiftPlanningUI.Pages.Users.IndexModel
 @{
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                @for (int i = 0; i < Model.Users.Count; i++) {
-                    <form method="post">
+}
+
+@for (int i = 0; i < Model.Users.Count; i++) {
+    Model.Email = Model.Users[i].Email;
+    <div class="card">
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <p>Email: @Model.Email</p>
+                    @if (@Model.Users[i].IsAdmin) {
+                        <p>Is Admin</p>
+                    } else {
+                        <p>Is not admin</p>
+                    }
+                </div>
+                <div class="col-2" style="position: relative; height: auto">
+                    <form method="post" asp-page-handler="Delete">
                         @{ Model.Email = Model.Users[i].Email; }
                         <input type="hidden" asp-for="@Model.Email" /> <!--ensure that Email is in scope-->
-                        <div class="card">
-                            <p>Email: @Model.Email</p>
-                            <p>Password: **************************</p>
-                            <div>
-                                @if (@Model.Users[i].IsAdmin) {
-                                    <p>Is admin</p>
-                                } else {
-                                    <p style ="float: left; width:fit-content;">Is not admin</p>
-                                    <input type="submit" value="Make admin" class="btn btn-primary" style="float: right; width:fit-content;" />
-                                }
-                            </div>
-                        </div>
+                        <input type="submit" value="Delete user" class="btn btn-primary" style="position: absolute; right: 0; bottom: 0;" />
                     </form>
+                </div>
+                @if (!Model.Users[i].IsAdmin) {
+                    <div class="col-2" style="position: relative; height: auto">
+                        <form method="post" asp-page-handler="MakeAdmin">
+                            @{
+                                Model.Email = Model.Users[i].Email;
+                            }
+                            <input type="hidden" asp-for="@Model.Email" /> <!--ensure that Email is in scope-->
+                            <input type="submit" value="Make admin" class="btn btn-primary" style="position: absolute; right: 0; bottom: 0;" />
+                        </form>
+                    </div>
                 }
             </div>
         </div>

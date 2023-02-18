@@ -16,16 +16,7 @@ namespace ShiftPlanningUI.Services {
         }
 
         public IUser? GetCurrentUser() {
-            if(_accessor.HttpContext is null) {
-                throw new InvalidOperationException("Failed to get HttpContext object from IHttpContextAccessor");
-            }
-
-            string? userAsString = _accessor.HttpContext.Session.GetString(currentUserSessionKey);
-            if(userAsString is null || userAsString == "") {
-                return null;
-            }
-
-            return JsonSerializer.Deserialize<User>(userAsString);
+            return SessionStorageHelper.GetFromSession<User>(_accessor, currentUserSessionKey);
         }
 
         public bool IsLoggedIn() {
@@ -38,29 +29,18 @@ namespace ShiftPlanningUI.Services {
             if (IsLoggedIn()) {
                 return false;
             }
-            if (_accessor.HttpContext is null) {
-                throw new InvalidOperationException("Failed to get HttpContext object from IHttpContextAccessor");
-            }
 
-            string userAsString = JsonSerializer.Serialize(user);
             if (_catalogue.VerifyUser(user)) {
-            } else if(_catalogue.VerifyUser(admin)) {
-                userAsString = JsonSerializer.Serialize(admin);
-            } else {
-                return false;
+                return SessionStorageHelper.PutInSession(_accessor, currentUserSessionKey, user);
+            } else if (_catalogue.VerifyUser(admin)) {
+                return SessionStorageHelper.PutInSession(_accessor, currentUserSessionKey, admin);
             }
-            
-            _accessor.HttpContext.Session.SetString(currentUserSessionKey, userAsString);
-
-            return true;
+            return false;
         }
 
         public bool MakeUserAdmin(string email) {
             if(!IsLoggedIn()) {
                 return false;
-            }
-            if (_accessor.HttpContext is null) {
-                throw new InvalidOperationException("Failed to get HttpContext object from IHttpContextAccessor");
             }
 
             return _catalogue.MakeUserAdmin(email, GetCurrentUser());
@@ -69,9 +49,6 @@ namespace ShiftPlanningUI.Services {
         public bool Register(IUser user) {
             if (IsLoggedIn()) {
                 return false;
-            }
-            if (_accessor.HttpContext is null) {
-                throw new InvalidOperationException("Failed to get HttpContext object from IHttpContextAccessor");
             }
 
             return _catalogue.Register(user);

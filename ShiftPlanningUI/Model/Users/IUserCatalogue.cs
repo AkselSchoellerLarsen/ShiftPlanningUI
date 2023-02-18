@@ -6,5 +6,7 @@ namespace ShiftPlanningUI.Model.Users {
         public bool Register(IUser user);
         public bool MakeUserAdmin(string email, IUser user);
         public bool VerifyUser(IUser user);
+        public bool DeleteUser(string userEmail, IUser user);
+        public bool DeleteUser(IUser userToDelete, IUser user);
     }
 }

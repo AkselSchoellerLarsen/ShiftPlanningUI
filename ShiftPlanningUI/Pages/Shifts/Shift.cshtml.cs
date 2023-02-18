@@ -19,6 +19,8 @@ namespace ShiftPlanningUI.Pages.Shifts {
         public string? UserEmail { get; set; }
         [BindProperty]
         public bool IsNew { get; set; }
+        [BindProperty]
+        public string ErrorLine { get; set; }
 
         public ShiftModel(IShiftCatalogue shiftCatalogue, IUserService userService) {
             _shiftCatalogue = shiftCatalogue;
@@ -27,7 +29,7 @@ namespace ShiftPlanningUI.Pages.Shifts {
 
         public void OnGet(int id, bool isNew) {
             IsNew = isNew;
-            if(IsNew) {
+            if (IsNew) {
                 Start = DateTime.Today.AddHours(8);
                 End = DateTime.Today.AddHours(16);
                 return;
@@ -42,28 +44,39 @@ namespace ShiftPlanningUI.Pages.Shifts {
             UserEmail = shift.UserEmail;
         }
 
-        public IActionResult OnPost() {
-            Shift shift;
-            if (UserEmail is null) {
-                shift = new Shift(Start, End);
-            } else {
-                shift = new Shift(UserEmail, Start, End);
-            }
-            
-            if(IsNew) {
-                _shiftCatalogue.PostShift(shift, _userService.GetCurrentUser());
-            } else {
-                shift.Id = Id;
-                _shiftCatalogue.PutShift(shift, _userService.GetCurrentUser());
-            }
+        public IActionResult? OnPost() {
+            try {
+                Shift shift;
+                if (UserEmail is null) {
+                    shift = new Shift(Start, End);
+                } else {
+                    shift = new Shift(UserEmail, Start, End);
+                }
 
-            return Redirect("~/");
+                if (IsNew) {
+                    _shiftCatalogue.PostShift(shift, _userService.GetCurrentUser());
+                } else {
+                    shift.Id = Id;
+                    _shiftCatalogue.PutShift(shift, _userService.GetCurrentUser());
+                }
+                return Redirect("~/");
+            }
+            catch (Exception e) {
+                ErrorLine = "Something went wrong";
+                return null;
+            }
         }
 
-        public IActionResult OnPostDelete() {
-            _shiftCatalogue.DeleteShift(Id, _userService.GetCurrentUser());
+        public IActionResult? OnPostDelete() {
+            try {
+                _shiftCatalogue.DeleteShift(Id, _userService.GetCurrentUser());
 
-            return Redirect("~/");
+                return Redirect("~/");
+            }
+            catch (Exception e) {
+                ErrorLine = "Something went wrong";
+                return null;
+            }
         }
     }
 }

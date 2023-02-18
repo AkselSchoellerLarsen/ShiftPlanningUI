@@ -12,6 +12,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserCatalogue, UserCatalogue>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IShiftCatalogue, ShiftCatalogue>();
+builder.Services.AddScoped<ISelectionService, SelectionService>();
 
 var app = builder.Build();
 

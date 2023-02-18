@@ -97,5 +97,38 @@ namespace ShiftPlanningUITesting {
             Assert.IsTrue(postUser.IsAdmin);
         }
         #endregion
+        #region DeleteUser
+        [TestMethod]
+        public void UserManagerTestsDeleteUserPositive() {
+            RESTHelper.BaseAddress = RESTURI;
+
+            IUserCatalogue catalogue = new UserCatalogue();
+
+            Random r = new Random();
+            string email = $"{r.Next(100000, 1000000)}@{r.Next(1000, 10000)}.com";
+            string password = $"not{r.Next(1000, 10000)}";
+            IUser user = new User(email, password, false);
+
+            catalogue.Register(user);
+            List<IUser> users = catalogue.GetUsers(testUser);
+            IUser preUser = users.Find((u) => {
+                if (u.Email == email) {
+                    return true;
+                }
+                return false;
+            }) ?? new User("", "", true);
+            Assert.IsFalse(preUser.IsAdmin);
+
+            catalogue.MakeUserAdmin(email, testUser);
+            users = catalogue.GetUsers(testUser);
+            IUser postUser = users.Find((u) => {
+                if (u.Email == email) {
+                    return true;
+                }
+                return false;
+            }) ?? new User("", "", false);
+            Assert.IsTrue(postUser.IsAdmin);
+        }
+        #endregion
     }
 }

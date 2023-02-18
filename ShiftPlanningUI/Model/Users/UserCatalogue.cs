@@ -69,5 +69,25 @@ namespace ShiftPlanningUI.Model.Users {
                 }
             }
         }
+
+        public bool DeleteUser(string email, IUser user) {
+            using (HttpRequestMessage request = new HttpRequestMessage()) {
+                request.Method = HttpMethod.Delete;
+                request.RequestUri = new Uri(RESTHelper.DeleteUserUri);
+
+                request.Headers.Add("email", user.Email);
+                request.Headers.Add("password", user.Password);
+                request.Headers.Add("isAdmin", $"{user.IsAdmin}");
+
+                request.Content = JsonContent.Create<string>(email);
+
+                using (HttpResponseMessage response = _client.Send(request)) {
+                    return response.IsSuccessStatusCode;
+                }
+            }
+        }
+        public bool DeleteUser(IUser userToDelete, IUser user) {
+            return DeleteUser(userToDelete.Email, user);
+        }
     }
 }
