@@ -133,13 +133,13 @@ namespace ShiftPlanningUI.Pages {
         }
 
         public IActionResult OnPostPrevious() {
-            DateTime dt = StartDate.AddDays(-3);
+            DateTime dt = StartDate.AddDays(-1);
 
             return Redirect($"~/?year={dt.Year}&month={dt.Month}&day={dt.Day}");
         }
 
         public IActionResult OnPostNext() {
-            DateTime dt = EndDate.AddDays(3);
+            DateTime dt = EndDate.AddDays(-1);
 
             return Redirect($"~/?year={dt.Year}&month={dt.Month}&day={dt.Day}");
         }
