@@ -91,7 +91,7 @@ namespace ShiftPlanningUI.Pages {
         [BindProperty]
         public DateTime EndDate {
             get { return _endDate; }
-            set { _endDate = GetCommingMonday(value); }
+            set { _endDate = GetCommingMonday(value.AddDays(1)); }
         }
         private DateTime Date {
             set {
@@ -120,7 +120,7 @@ namespace ShiftPlanningUI.Pages {
         public void OnGet() {
             List<IShift> shifts = new ShiftCatalogue().GetShifts(UserService.GetCurrentUser());
             foreach(IShift shift in shifts) {
-                if(shift.Start > StartDate && shift.Start < EndDate) {
+                if(shift.Start < StartDate || shift.End > EndDate) {
                     Shifts.Add(shift);
                 }
             }
